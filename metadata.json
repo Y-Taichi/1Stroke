@@ -1,0 +1,5 @@
+{
+  "name": "OneStroke Master",
+  "description": "A single-stroke drawing practice app. Trace an image, draw from memory, and get AI-powered analysis with vertex morphing visualization.",
+  "requestFramePermissions": []
+}
