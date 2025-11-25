@@ -1,5 +1,7 @@
 {
   "name": "OneStroke Master",
+  "name_ja": "一筆描きマスター",
   "description": "A single-stroke drawing practice app. Trace an image, draw from memory, and get AI-powered analysis with vertex morphing visualization.",
+  "description_ja": "一筆描きの練習アプリ。画像をトレースし、記憶から描き、頂点のモーフィングによる可視化とAI解析でフィードバックを得られます。",
   "requestFramePermissions": []
 }

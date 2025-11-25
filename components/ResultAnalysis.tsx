@@ -1,6 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { AnalysisResult } from '../types';
+import { useI18n } from '../i18n';
 import { getDrawingAdvice } from '../services/geminiService';
 import ResultVisualizer from './ResultVisualizer';
 
@@ -23,10 +24,12 @@ const ResultAnalysis: React.FC<ResultAnalysisProps> = ({ result, onRetry, onNewI
   const lastPos = useRef({ x: 0, y: 0 });
   const lastDist = useRef<number | null>(null);
 
+  const { t, locale } = useI18n();
+
   const fetchAdvice = async () => {
     if (advice) return;
     setLoadingAdvice(true);
-    const text = await getDrawingAdvice(result.score, result.diffs);
+    const text = await getDrawingAdvice(result.score, result.diffs, locale);
     setAdvice(text);
     setLoadingAdvice(false);
   };
@@ -89,6 +92,8 @@ const ResultAnalysis: React.FC<ResultAnalysisProps> = ({ result, onRetry, onNewI
     }
   };
 
+  
+
   return (
     <div className="fixed inset-0 z-50 bg-slate-50 dark:bg-slate-900 flex flex-col animate-in fade-in duration-300">
       
@@ -129,7 +134,7 @@ const ResultAnalysis: React.FC<ResultAnalysisProps> = ({ result, onRetry, onNewI
          {/* Floating Advice Overlay */}
          {advice && (
             <div className="absolute top-24 left-6 right-6 md:left-auto md:right-6 md:w-80 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl border border-indigo-100 dark:border-slate-700 animate-in slide-in-from-top-4 z-20 pointer-events-auto cursor-auto" onPointerDown={e => e.stopPropagation()}>
-               <h4 className="text-xs font-black text-indigo-500 dark:text-indigo-400 uppercase tracking-widest mb-1">AI Coach</h4>
+               <h4 className="text-xs font-black text-indigo-500 dark:text-indigo-400 uppercase tracking-widest mb-1">{t('ai.coach')}</h4>
                <p className="text-sm text-slate-800 dark:text-slate-200 font-medium leading-relaxed">{advice}</p>
                <button onClick={() => setAdvice(null)} className="absolute top-2 right-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">×</button>
             </div>
@@ -138,11 +143,11 @@ const ResultAnalysis: React.FC<ResultAnalysisProps> = ({ result, onRetry, onNewI
          {/* Zoom Controls Overlay (Optional but helpful) */}
          <div className="absolute top-4 left-4 flex flex-col gap-2 z-20 pointer-events-none">
             <div className="bg-black/30 backdrop-blur text-white text-xs px-2 py-1 rounded pointer-events-auto">
-               Zoom: {Math.round(scale * 100)}%
+               {t('zoom')}: {Math.round(scale * 100)}%
             </div>
             {result.isHintUsed && (
                <div className="bg-yellow-500/90 text-white dark:text-slate-900 font-bold text-xs px-2 py-1 rounded pointer-events-auto shadow-sm flex items-center gap-1">
-                 💡 Hint Mode Used
+                 💡 {t('hint.used')}
                </div>
             )}
          </div>
@@ -153,7 +158,7 @@ const ResultAnalysis: React.FC<ResultAnalysisProps> = ({ result, onRetry, onNewI
         
         {/* Left: Slider */}
         <div className="w-full md:w-1/3 flex items-center gap-3">
-           <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase w-12">Mine</span>
+           <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase w-12">{t('label.mine')}</span>
            <input 
             type="range" 
             min="0" 
@@ -162,13 +167,13 @@ const ResultAnalysis: React.FC<ResultAnalysisProps> = ({ result, onRetry, onNewI
             onChange={(e) => setMorphValue(Number(e.target.value))}
             className="flex-1 accent-blue-600 h-2 bg-slate-100 dark:bg-slate-700 rounded-full appearance-none cursor-pointer border border-slate-200 dark:border-slate-600"
           />
-          <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase w-12 text-right">Target</span>
+          <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase w-12 text-right">{t('label.target')}</span>
         </div>
 
         {/* Center: Score */}
         <div className="flex flex-col items-center md:w-1/3">
           <div className="flex items-baseline gap-1 justify-center">
-            <span className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mr-2">Match</span>
+            <span className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mr-2">{t('label.match')}</span>
             <span className={`text-4xl font-black ${result.score > 80 ? 'text-green-500' : result.score > 50 ? 'text-yellow-500' : 'text-red-500'}`}>
               {result.score.toFixed(1)}
             </span>
@@ -176,7 +181,7 @@ const ResultAnalysis: React.FC<ResultAnalysisProps> = ({ result, onRetry, onNewI
           </div>
           {result.isHintUsed && (
             <span className="text-[10px] font-bold text-yellow-500 uppercase tracking-widest mt-1">
-              (With Hint)
+              {t('withHint')}
             </span>
           )}
         </div>
@@ -188,7 +193,7 @@ const ResultAnalysis: React.FC<ResultAnalysisProps> = ({ result, onRetry, onNewI
                onClick={fetchAdvice}
                disabled={loadingAdvice}
                className="p-3 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-bold hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition active:scale-95"
-               title="Get AI Advice"
+               title={t('getAdvice')}
              >
                {loadingAdvice ? <span className="animate-spin block">↻</span> : "✨"}
              </button>
@@ -198,13 +203,13 @@ const ResultAnalysis: React.FC<ResultAnalysisProps> = ({ result, onRetry, onNewI
             onClick={onRetry}
             className="flex-1 md:flex-none px-6 py-3 rounded-full bg-slate-800 dark:bg-blue-600 text-white font-bold hover:bg-slate-900 dark:hover:bg-blue-500 shadow-lg shadow-slate-200 dark:shadow-none transition active:scale-95 whitespace-nowrap"
           >
-            Try Again
+            {t('button.tryAgain')}
           </button>
           <button 
             onClick={onNewImage}
             className="flex-1 md:flex-none px-6 py-3 rounded-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-200 font-bold hover:bg-slate-50 dark:hover:bg-slate-600 transition active:scale-95 whitespace-nowrap"
           >
-            New Image
+            {t('button.newImage')}
           </button>
         </div>
       </div>

@@ -1,5 +1,6 @@
 
 import React, { useRef, useState, useEffect } from 'react';
+import { useI18n } from '../i18n';
 import { Path, Point } from '../types';
 import { pathToSvgD } from '../utils/geometry';
 
@@ -88,11 +89,13 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
     handleReset();
   };
 
+  const { t } = useI18n();
+
   const handleFinish = () => {
     if (currentPath.length > 5) {
       onComplete(currentPath, isHintMode);
     } else {
-      alert("Please draw a longer line first.");
+      alert(t('alert.drawLonger'));
     }
   };
 
@@ -165,14 +168,14 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
           <g className="pointer-events-none">
             <circle cx={guideStart.x} cy={guideStart.y} r={12} fill="rgba(16, 185, 129, 0.2)" className="animate-pulse" />
             <circle cx={guideStart.x} cy={guideStart.y} r={4} fill="#10b981" />
-            <text x={guideStart.x + 15} y={guideStart.y + 5} className="text-sm fill-emerald-600 dark:fill-emerald-400 font-bold font-sans shadow-sm" style={{ textShadow: '0px 1px 2px rgba(0,0,0,0.1)' }}>Start</text>
+            <text x={guideStart.x + 15} y={guideStart.y + 5} className="text-sm fill-emerald-600 dark:fill-emerald-400 font-bold font-sans shadow-sm" style={{ textShadow: '0px 1px 2px rgba(0,0,0,0.1)' }}>{t('start')}</text>
           </g>
         )}
         
         {guideEnd && (
           <g className="pointer-events-none opacity-60">
             <circle cx={guideEnd.x} cy={guideEnd.y} r={4} stroke="#ef4444" strokeWidth={2} fill="none" />
-            <text x={guideEnd.x + 15} y={guideEnd.y + 5} className="text-sm fill-red-500 dark:fill-red-400 font-bold font-sans" style={{ textShadow: '0px 1px 2px rgba(0,0,0,0.1)' }}>End</text>
+            <text x={guideEnd.x + 15} y={guideEnd.y + 5} className="text-sm fill-red-500 dark:fill-red-400 font-bold font-sans" style={{ textShadow: '0px 1px 2px rgba(0,0,0,0.1)' }}>{t('end')}</text>
           </g>
         )}
 
@@ -200,7 +203,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
                 ? 'bg-yellow-400 border-yellow-500 text-yellow-900 shadow-yellow-500/50' 
                 : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-400'
             }`}
-            title="Toggle Hint Mode (Resets Drawing)"
+            title={t('hint.toggle')}
           >
             <span className="text-lg">💡</span>
           </button>
@@ -238,7 +241,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
           onClick={handleReset}
           className="px-5 py-3 rounded-full bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-200 font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-lg border border-slate-200 dark:border-slate-700 active:scale-95 text-sm"
         >
-          Clear
+          {t('button.clear')}
         </button>
         
         <button
@@ -249,8 +252,8 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
               ? 'bg-slate-400 cursor-not-allowed' 
               : 'bg-slate-900 dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-500'
           }`}
-        >
-          Done
+          >
+          {t('button.done')}
         </button>
       </div>
     </div>
