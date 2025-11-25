@@ -1,20 +1,17 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
-
-# Run and deploy your AI Studio app
-
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/drive/1a5ydXtGqkrUPW12bImBDm2zV09HNFN4r
-
 ## Run Locally
 
-**Prerequisites:**  Node.js
-
+**Prerequisites:** Node.js
 
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+2. Set your API key in the environment file (e.g., `.env.local`).
 3. Run the app:
    `npm run dev`
+
+## About This Project
+
+This project is a game where you compete using a single continuous stroke.
+Your line is your score — with only one stroke, try to be as creative as possible and draw the best image you can.
+By playing repeatedly, you'll naturally improve your drawing skills. I originally created this because I wanted to draw the map of Hokkaido beautifully.
+
+The code was written by Gemini and the-pen.
