@@ -110,12 +110,12 @@ const App: React.FC = () => {
         </div>
 
         <button 
-        onClick={() => setDarkMode(!darkMode)}
-        className="fixed top-6 right-6 z-50 p-3 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur shadow-md border border-slate-200 dark:border-slate-700 transition hover:scale-110"
-      >
-        {darkMode ? '☀️' : '🌙'}
+          onClick={() => setDarkMode(!darkMode)}
+          className="z-50 p-3 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur shadow-md border border-slate-200 dark:border-slate-700 transition hover:scale-110"
+        >
+          {darkMode ? '☀️' : '🌙'}
+        </button>
       </div>
-      </button>
 
       {/* Background Layer for Start Screen - Previous Result Visualization */}
       {step === AppStep.UPLOAD && savedResult && (
